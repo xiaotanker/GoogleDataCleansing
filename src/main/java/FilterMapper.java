@@ -13,7 +13,7 @@ public class FilterMapper
 
         String line = value.toString();
         String[] split = line.split(",");
-        if(split[0].equals("US")&&split[3].length()>0) {
+        if(split[0].equals("US")&&split.length == 15 &&split[3].length()>0) {
             String output = String.join(",",split[1],split[2],split[3],split[7],split[8],split[9],split[10],split[11],split[12],split[13],split[14]);
             context.write(NullWritable.get(), new Text(output));
         }
