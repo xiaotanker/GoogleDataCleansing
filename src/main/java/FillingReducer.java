@@ -17,7 +17,7 @@ public class FillingReducer
             String str = value.toString();
             str = str + " ";
             String[] split = str.split(",");
-            split[11] = split[11].substring(0, split[11].length() - 1);
+            split[10] = split[10].substring(0, split[10].length() - 1);
             list.add(split);
         }
 
