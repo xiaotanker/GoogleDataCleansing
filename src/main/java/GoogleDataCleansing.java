@@ -19,7 +19,7 @@ public class GoogleDataCleansing {
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
         job.setMapperClass(FilterMapper.class);
         job.setReducerClass(FillingReducer.class);
-        job.setOutputKeyClass(NullWritable.class);
+        job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
         System.exit(job.waitForCompletion(true) ? 0 : 1);
 
