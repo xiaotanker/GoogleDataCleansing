@@ -31,6 +31,7 @@ public class FillingReducer
         Arrays.fill(last,-1);
         for(int i=0; i<list.size(); i++){
             for(int j=0; j<6; j++){
+
                 if(list.get(i)[j+5].length()==0){
                     continue;
                 }
@@ -54,7 +55,7 @@ public class FillingReducer
         }
         for(int i=0;i<6;i++){
             for(int j = last[i]+1; j < list.size();j++){
-                list.get(j)[i+5] = list.get(last[i])[i+5];
+                list.get(j)[i+5] = last[i]== -1 ? "0" : list.get(last[i])[i+5];
             }
         }
         for(String[] split : list){
