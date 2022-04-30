@@ -32,16 +32,13 @@ public class FillingReducer
         }
         String[] first = list.get(0);
         String out = String.join(",",first[0],first[1],first[2],first[3],
-                                count[0]==0?"":String.valueOf(sum[0]/count[0]),
-                count[1]==0?"":String.valueOf(sum[1]/count[1]),
-                count[2]==0?"":String.valueOf(sum[2]/count[2]),
-                count[3]==0?"":String.valueOf(sum[3]/count[3]),
-                count[4]==0?"":String.valueOf(sum[4]/count[4]),
-                count[5]==0?"":String.valueOf(sum[5]/count[5]));
+                count[0]==0?"":String.format("%.2f",sum[0]/count[0]),
+                count[1]==0?"":String.format("%.2f",sum[1]/count[1]),
+                count[2]==0?"":String.format("%.2f",sum[2]/count[2]),
+                count[3]==0?"":String.format("%.2f",sum[3]/count[3]),
+                count[4]==0?"":String.format("%.2f",sum[4]/count[4]),
+                count[5]==0?"":String.format("%.2f",sum[5]/count[5]));
         context.write(NullWritable.get(),new Text(out));
-
-
-
 
     }
 }
