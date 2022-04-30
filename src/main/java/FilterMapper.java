@@ -18,8 +18,11 @@ public class FilterMapper
         split[14] = split[14].substring(0,split[14].length()-1);
 
         if(split[0].equals("US")&&split[3].length()>0) {
-            String output = String.join(",",split[1],split[2],split[3],split[7],split[8],split[9],split[10],split[11],split[12],split[13],split[14]);
-            context.write(new Text(split[7]), new Text(output));
+            //US,State,county,month,kpi1,kpi2,kpi3,kpi4,kpi5,kpi6
+            String output = String.join(",",split[1],split[2],split[3],split[8].substring(0,7),split[9],split[10],split[11],split[12],split[13],split[14]);
+
+
+            context.write(new Text(String.join(",",split[7],split[8].substring(0,7))), new Text(output));
         }
 
     }

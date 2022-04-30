@@ -11,55 +11,37 @@ public class FillingReducer
     @Override
     public void reduce(Text key, Iterable<Text> values, Context context)
             throws IOException, InterruptedException {
-
+        //value :US,State,county,month,kpi1,kpi2,kpi3,kpi4,kpi5,kpi6
         List<String[]> list = new ArrayList<>();
         for (Text value : values) {
             String str = value.toString();
             str = str + " ";
             String[] split = str.split(",");
-            split[10] = split[10].substring(0, split[10].length() - 1);
+            split[9] = split[9].substring(0, split[9].length() - 1);
             list.add(split);
         }
-
-        Collections.sort(list, (s1,s2)->{
-            LocalDate date1 = LocalDate.parse(s1[4]);
-            LocalDate date2 = LocalDate.parse(s2[4]);
-            return date1.compareTo(date2);
-        });
-
-        int[] last = new int[6];
-        Arrays.fill(last,-1);
-        for(int i=0; i<list.size(); i++){
-            for(int j=0; j<6; j++){
-
-                if(list.get(i)[j+5].length()==0){
-                    continue;
+        double[] sum = new double[6];
+        int[] count = new int[6];
+        for(String[] split: list){
+            for(int i = 4; i <= 9;i++){
+                if(split[i].length()>0){
+                    count[i-4]++;
+                    sum[i-4]+=Double.parseDouble(split[i]);
                 }
-
-                if(last[j] == -1){
-                    last[j] = i;
-                    for(int k=0; k<i; k++){
-                        list.get(k)[j+5] = list.get(i)[j+5];
-                    }
-                    continue;
-                }
-
-                double start = Double.parseDouble(list.get(last[j])[j+5]);
-                double end = Double.parseDouble(list.get(i)[j+5]);
-                double part = (end - start)/(i - last[j]);
-                for(int k = last[j] + 1; k < i; k++){
-                    list.get(k)[j+5] = String.format("%.2f", start + part * (k - last[j]));
-                }
-                last[j] = i;
             }
         }
-        for(int i=0;i<6;i++){
-            for(int j = last[i]+1; j < list.size();j++){
-                list.get(j)[i+5] = last[i]== -1 ? "0" : list.get(last[i])[i+5];
-            }
-        }
-        for(String[] split : list){
-            context.write(NullWritable.get(), new Text(String.join(",",split)));
-        }
+        String[] first = list.get(0);
+        String out = String.join(",",first[0],first[1],first[2],first[3],
+                                count[0]==0?"":String.valueOf(sum[0]/count[0]),
+                count[1]==0?"":String.valueOf(sum[1]/count[1]),
+                count[2]==0?"":String.valueOf(sum[2]/count[2]),
+                count[3]==0?"":String.valueOf(sum[3]/count[3]),
+                count[4]==0?"":String.valueOf(sum[4]/count[4]),
+                count[5]==0?"":String.valueOf(sum[5]/count[5]));
+        context.write(NullWritable.get(),new Text(out));
+
+
+
+
     }
 }
